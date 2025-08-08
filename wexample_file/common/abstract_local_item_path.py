@@ -1,10 +1,11 @@
+from abc import ABC, abstractmethod
 from pathlib import Path
 
 from pydantic import BaseModel, Field, field_validator
 
 
-class AbstractLocalItemPath(BaseModel):
-    """Base class for handling local file system paths.
+class AbstractLocalItemPath(BaseModel, ABC):
+    """Abstract base class for handling local file system paths.
 
     Accepts either a string or a pathlib.Path for ``path`` and always stores a
     resolved absolute Path (with user home expanded). This keeps comparisons and
@@ -25,6 +26,14 @@ class AbstractLocalItemPath(BaseModel):
         if isinstance(v, Path):
             return v.expanduser().resolve(strict=False)
         raise TypeError("path must be a str or pathlib.Path")
+
+    @abstractmethod
+    def _kind(self) -> str:
+        """Return the kind of local item (e.g., 'file' or 'directory').
+
+        Subclasses must implement this to mark the class as abstract and to
+        provide a simple discriminator for debugging and representation.
+        """
 
     def __str__(self) -> str:
         return str(self.path)
