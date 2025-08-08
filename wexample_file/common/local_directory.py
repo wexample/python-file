@@ -20,4 +20,6 @@ class LocalDirectory(AbstractLocalItemPath):
         return v
 
     def _kind(self) -> str:
-        return "directory"
+        from wexample_file.const.globals import PATH_NAME_DIRECTORY
+
+        return PATH_NAME_DIRECTORY

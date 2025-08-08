@@ -21,4 +21,6 @@ class LocalFile(AbstractLocalItemPath):
         return v
 
     def _kind(self) -> str:
-        return "file"
+        from wexample_file.const.globals import PATH_NAME_FILE
+
+        return PATH_NAME_FILE
