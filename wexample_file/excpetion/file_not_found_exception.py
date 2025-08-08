@@ -1,5 +1,5 @@
-from wexample_app.exception.abstract_exception import AbstractException
+from wexample_file.excpetion.local_path_not_found_exception import LocalPathNotFoundException
 
 
-class FileNotFoundException(AbstractException):
+class FileNotFoundException(LocalPathNotFoundException):
     pass
