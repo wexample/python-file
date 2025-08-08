@@ -2,4 +2,8 @@ from wexample_file.excpetion.local_path_not_found_exception import LocalPathNotF
 
 
 class FileNotFoundException(LocalPathNotFoundException):
-    pass
+    error_code: str = "FILE_NOT_FOUND"
+
+    def __init__(self, path, message: str | None = None):
+        msg = message or f"File does not exist: {path}"
+        super().__init__(path=path, message=msg)

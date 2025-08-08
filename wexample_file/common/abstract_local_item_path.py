@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 from pydantic import BaseModel, Field, field_validator, model_validator
+from wexample_file.excpetion.local_path_not_found_exception import LocalPathNotFoundException
 
 
 class AbstractLocalItemPath(BaseModel, ABC):
@@ -32,7 +33,12 @@ class AbstractLocalItemPath(BaseModel, ABC):
     def _validate_existence(self):
         """If should_exist is True, ensure the path exists."""
         if self.should_exist and not self.path.exists():
-            raise ValueError(f"{self._kind().capitalize()} does not exist: {self.path}")
+            # Defer to subclass to choose the most specific exception
+            exc = self._not_found_exc()
+            if exc is None:
+                # Fallback to a generic not-found exception
+                raise LocalPathNotFoundException(self.path)
+            raise exc
         return self
 
     @abstractmethod
@@ -41,6 +47,16 @@ class AbstractLocalItemPath(BaseModel, ABC):
 
         Subclasses must implement this to mark the class as abstract and to
         provide a simple discriminator for debugging and representation.
+        """
+
+    @abstractmethod
+    def _not_found_exc(self) -> Exception | None:
+        """Return a specific 'not found' exception instance for this item type.
+
+        Subclasses should return an instance of a custom exception that best
+        represents the missing path for their type (e.g., FileNotFoundException
+        or DirectoryNotFoundException). Returning None will make the base class
+        fall back to LocalPathNotFoundException.
         """
 
     def __str__(self) -> str:
