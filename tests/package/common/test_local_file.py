@@ -24,3 +24,17 @@ def test_local_file_rejects_directory(tmp_path):
     d.mkdir()
     with pytest.raises(ValueError):
         LocalFile(path=d)
+
+
+def test_local_file_should_exist_true_accepts_existing_file(tmp_path):
+    p = tmp_path / "exists.txt"
+    p.write_text("data")
+    lf = LocalFile(path=p, should_exist=True)
+    assert lf.path == p.resolve()
+
+
+def test_local_file_should_exist_true_rejects_missing(tmp_path):
+    p = tmp_path / "missing2.txt"
+    assert not p.exists()
+    with pytest.raises(ValueError):
+        LocalFile(path=p, should_exist=True)

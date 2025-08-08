@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 class AbstractLocalItemPath(BaseModel, ABC):
@@ -12,6 +12,7 @@ class AbstractLocalItemPath(BaseModel, ABC):
     downstream usage consistent regardless of how the input was provided.
     """
     path: Path = Field(description="The path to the file or directory")
+    should_exist: bool = False
 
     @field_validator("path", mode="before")
     @classmethod
@@ -27,6 +28,13 @@ class AbstractLocalItemPath(BaseModel, ABC):
             return v.expanduser().resolve(strict=False)
         raise TypeError("path must be a str or pathlib.Path")
 
+    @model_validator(mode="after")
+    def _validate_existence(self):
+        """If should_exist is True, ensure the path exists."""
+        if self.should_exist and not self.path.exists():
+            raise ValueError(f"{self._kind().capitalize()} does not exist: {self.path}")
+        return self
+
     @abstractmethod
     def _kind(self) -> str:
         """Return the kind of local item (e.g., 'file' or 'directory').
@@ -39,7 +47,7 @@ class AbstractLocalItemPath(BaseModel, ABC):
         return str(self.path)
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}(path={repr(str(self.path))})"
+        return f"{self.__class__.__name__}(path={repr(str(self.path))}, should_exist={self.should_exist})"
 
     def __eq__(self, other) -> bool:
         if isinstance(other, AbstractLocalItemPath):
