@@ -1,24 +1,41 @@
 from pathlib import Path
-from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class AbstractLocalItemPath(BaseModel):
-    """Base class for handling local file paths with type checking capabilities."""
+    """Base class for handling local file system paths.
+
+    Accepts either a string or a pathlib.Path for ``path`` and always stores a
+    resolved absolute Path (with user home expanded). This keeps comparisons and
+    downstream usage consistent regardless of how the input was provided.
+    """
     path: Path = Field(description="The path to the file or directory")
-    check_is_file: Optional[bool] = Field(
-        default=None,
-        description="If True, verify path is a file. If False, verify it's a directory. If None, accept either."
-    )
+
+    @field_validator("path", mode="before")
+    @classmethod
+    def _coerce_and_resolve_path(cls, v):
+        """Coerce input into a resolved Path.
+
+        - Accepts str or Path
+        - Expands '~' and resolves to an absolute path with strict=False
+        """
+        if isinstance(v, str):
+            v = Path(v)
+        if isinstance(v, Path):
+            return v.expanduser().resolve(strict=False)
+        raise TypeError("path must be a str or pathlib.Path")
 
     def __str__(self) -> str:
         return str(self.path)
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}({repr(str(self.path))})"
+        return f"{self.__class__.__name__}(path={repr(str(self.path))})"
 
     def __eq__(self, other) -> bool:
         if isinstance(other, AbstractLocalItemPath):
             return self.path == other.path
-        return self.path == other
+        if isinstance(other, (str, Path)):
+            other_path = Path(other).expanduser().resolve(strict=False)
+            return self.path == other_path
+        return NotImplemented
