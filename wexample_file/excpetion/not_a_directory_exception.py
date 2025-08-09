@@ -1,7 +1,7 @@
-from wexample_helpers.exception.abstract_exception import AbstractException
+from wexample_helpers.exception.undefined_exception import UndefinedException
 
 
-class NotADirectoryException(AbstractException):
+class NotADirectoryException(UndefinedException):
     error_code: str = "DIRECTORY_EXPECTED"
 
     def __init__(self, path, message: str | None = None):
