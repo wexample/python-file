@@ -40,3 +40,27 @@ def test_local_file_should_exist_true_rejects_missing(tmp_path):
     assert not p.exists()
     with pytest.raises(FileNotFoundException):
         LocalFile(path=p, should_exist=True)
+
+
+def test_local_file_remove_deletes_file(tmp_path):
+    p = tmp_path / "toremove.txt"
+    p.write_text("data")
+    lf = LocalFile(path=p, should_exist=True)
+    assert p.exists()
+    lf.remove()
+    assert not p.exists()
+
+
+def test_local_file_remove_idempotent(tmp_path):
+    p = tmp_path / "missing_after_remove.txt"
+    lf = LocalFile(path=p)
+    # First remove on non-existent path should not raise
+    lf.remove()
+    assert not p.exists()
+    # Create then remove, then remove again
+    p.write_text("hello")
+    lf2 = LocalFile(path=p, should_exist=True)
+    lf2.remove()
+    assert not p.exists()
+    # Idempotent second call
+    lf2.remove()

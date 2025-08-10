@@ -59,6 +59,17 @@ class AbstractLocalItemPath(BaseModel, ABC):
         fall back to LocalPathNotFoundException.
         """
 
+    @abstractmethod
+    def remove(self) -> None:
+        """Remove the underlying path from the filesystem.
+
+        - For a file implementation, this should delete the file.
+        - For a directory implementation, this should delete the directory
+          recursively.
+        - This operation should be idempotent: if the path does not exist,
+          the method should complete without raising.
+        """
+
     def __str__(self) -> str:
         return str(self.path)
 

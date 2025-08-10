@@ -28,3 +28,21 @@ class LocalDirectory(AbstractLocalItemPath):
 
     def _not_found_exc(self):
         return DirectoryNotFoundException(self.path)
+
+    def remove(self) -> None:
+        """Delete the directory recursively if it exists; no-op if it doesn't.
+
+        This method is idempotent and will not raise if the directory is missing.
+        """
+        if not self.path.exists():
+            return
+        if self.path.is_dir():
+            # Remove contents recursively
+            import shutil
+            shutil.rmtree(self.path)
+        else:
+            # If for some reason it's not a dir anymore, best-effort unlink
+            try:
+                self.path.unlink()
+            except FileNotFoundError:
+                pass

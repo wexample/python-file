@@ -40,3 +40,29 @@ def test_local_directory_should_exist_true_rejects_missing(tmp_path):
     assert not d.exists()
     with pytest.raises(DirectoryNotFoundException):
         LocalDirectory(path=d, should_exist=True)
+
+
+def test_local_directory_remove_deletes_directory_recursively(tmp_path):
+    d = tmp_path / "adir_to_remove"
+    sub = d / "sub"
+    sub.mkdir(parents=True)
+    (sub / "file.txt").write_text("hello")
+    ld = LocalDirectory(path=d, should_exist=True)
+    assert d.exists() and d.is_dir()
+    ld.remove()
+    assert not d.exists()
+
+
+def test_local_directory_remove_idempotent(tmp_path):
+    d = tmp_path / "missing_dir_after_remove"
+    ld = LocalDirectory(path=d)
+    # First remove on non-existent path should not raise
+    ld.remove()
+    assert not d.exists()
+    # Create then remove, then remove again
+    d.mkdir()
+    ld2 = LocalDirectory(path=d, should_exist=True)
+    ld2.remove()
+    assert not d.exists()
+    # Idempotent second call
+    ld2.remove()

@@ -29,3 +29,16 @@ class LocalFile(AbstractLocalItemPath):
 
     def _not_found_exc(self):
         return FileNotFoundException(self.path)
+
+    def remove(self) -> None:
+        """Delete the file if it exists; no-op if it doesn't.
+
+        This method is idempotent and will not raise if the file is missing.
+        """
+        try:
+            # unlink(missing_ok=True) is available in Python 3.8+
+            self.path.unlink(missing_ok=True)
+        except TypeError:
+            # Fallback for older Python: check existence first
+            if self.path.exists():
+                self.path.unlink()
