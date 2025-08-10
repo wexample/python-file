@@ -63,11 +63,30 @@ class LocalFile(AbstractLocalItemPath):
         self.path.touch(exist_ok=exist_ok)
         return True
 
-    def write(self, content: str, encoding: str = "utf-8", make_parents: bool = True) -> bool:
+    def write(self, content: str, encoding: str = "utf-8", make_parents: bool = True) -> None:
+        """Write text content to the file, creating it if necessary.
+        """
         if make_parents:
             self.path.parent.mkdir(parents=True, exist_ok=True)
-        if self.path.exists() or self.path.is_dir():
-            return False
-
+        if self.path.exists() and self.path.is_dir():
+            raise NotAFileException(self.path)
         self.path.write_text(content, encoding=encoding)
-        return True
+
+    def get_extension(self) -> str:
+        """Return the last suffix without the leading dot.
+
+        Examples:
+            "archive.tar.gz" -> "gz"
+            "report.pdf" -> "pdf"
+            "README" -> ""
+        """
+        suf = self.path.suffix
+        return suf[1:] if suf.startswith(".") else ""
+
+    def change_extension(self, new_extension: str) -> None:
+        # Normalize extension: allow callers to pass with or without dot
+        ext = new_extension.lstrip(".")
+        suffix = f".{ext}" if ext else ""
+        target = self.path.with_suffix(suffix)
+
+        self.path.replace(target)

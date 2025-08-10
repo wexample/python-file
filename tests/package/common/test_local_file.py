@@ -1,6 +1,5 @@
 import pytest
 from pathlib import Path
-
 from wexample_file.common.local_file import LocalFile
 from wexample_file.excpetion.not_a_file_exception import NotAFileException
 from wexample_file.excpetion.file_not_found_exception import FileNotFoundException
@@ -110,3 +109,26 @@ def test_local_file_write_writes_content_and_creates_parents(tmp_path):
     lf.write(text)
     assert nested.exists() and nested.read_text() == text
 
+
+def test_local_file_get_extension_simple(tmp_path):
+    p = tmp_path / "report.pdf"
+    lf = LocalFile(path=p)
+    assert lf.get_extension() == "pdf"
+
+
+def test_local_file_get_extension_compound(tmp_path):
+    p = tmp_path / "archive.tar.gz"
+    lf = LocalFile(path=p)
+    assert lf.get_extension() == "gz"
+
+
+def test_local_file_get_extension_none(tmp_path):
+    p = tmp_path / "README"
+    lf = LocalFile(path=p)
+    assert lf.get_extension() == ""
+
+
+def test_local_file_get_extension_hidden_file(tmp_path):
+    p = tmp_path / ".gitignore"
+    lf = LocalFile(path=p)
+    assert lf.get_extension() == ""
