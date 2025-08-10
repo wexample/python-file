@@ -13,7 +13,7 @@ class AbstractLocalItemPath(BaseModel, ABC):
     downstream usage consistent regardless of how the input was provided.
     """
     path: Path = Field(description="The path to the file or directory")
-    should_exist: bool = False
+    check_exists: bool = False
 
     @field_validator("path", mode="before")
     @classmethod

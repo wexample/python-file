@@ -28,24 +28,24 @@ def test_local_file_rejects_directory(tmp_path):
         LocalFile(path=d)
 
 
-def test_local_file_should_exist_true_accepts_existing_file(tmp_path):
+def test_local_file_check_exists_true_accepts_existing_file(tmp_path):
     p = tmp_path / "exists.txt"
     p.write_text("data")
-    lf = LocalFile(path=p, should_exist=True)
+    lf = LocalFile(path=p, check_exists=True)
     assert lf.path == p.resolve()
 
 
-def test_local_file_should_exist_true_rejects_missing(tmp_path):
+def test_local_file_check_exists_true_rejects_missing(tmp_path):
     p = tmp_path / "missing2.txt"
     assert not p.exists()
     with pytest.raises(FileNotFoundException):
-        LocalFile(path=p, should_exist=True)
+        LocalFile(path=p, check_exists=True)
 
 
 def test_local_file_remove_deletes_file(tmp_path):
     p = tmp_path / "toremove.txt"
     p.write_text("data")
-    lf = LocalFile(path=p, should_exist=True)
+    lf = LocalFile(path=p, check_exists=True)
     assert p.exists()
     lf.remove()
     assert not p.exists()
@@ -59,7 +59,7 @@ def test_local_file_remove_idempotent(tmp_path):
     assert not p.exists()
     # Create then remove, then remove again
     p.write_text("hello")
-    lf2 = LocalFile(path=p, should_exist=True)
+    lf2 = LocalFile(path=p, check_exists=True)
     lf2.remove()
     assert not p.exists()
     # Idempotent second call
