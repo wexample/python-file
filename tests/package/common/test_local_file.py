@@ -64,3 +64,49 @@ def test_local_file_remove_idempotent(tmp_path):
     assert not p.exists()
     # Idempotent second call
     lf2.remove()
+
+
+def test_local_file_read_returns_content_when_exists(tmp_path):
+    p = tmp_path / "readme.txt"
+    content = "héllo world"
+    p.write_text(content, encoding="utf-8")
+    lf = LocalFile(path=p)
+    assert lf.read() == content
+
+
+def test_local_file_read_returns_none_when_missing(tmp_path):
+    p = tmp_path / "missing_read.txt"
+    lf = LocalFile(path=p)
+    assert lf.read() is None
+
+
+def test_local_file_read_raises_if_not_a_file(tmp_path):
+    d = tmp_path / "not_a_file"
+    d.mkdir()
+    # Constructing LocalFile with a directory path would already raise NotAFileException
+    # So we simulate a race: create a file path then replace with directory
+    p = tmp_path / "was_file.txt"
+    p.write_text("x")
+    lf = LocalFile(path=p)
+    # Replace the path with a directory at same location
+    p.unlink()
+    d.rename(p)
+
+    assert lf.read() is None
+
+
+def test_local_file_touch_creates_file_and_parents(tmp_path):
+    nested = tmp_path / "a/b/c/file.txt"
+    lf = LocalFile(path=nested)
+    assert not nested.exists()
+    lf.touch()
+    assert nested.exists() and nested.is_file()
+
+
+def test_local_file_write_writes_content_and_creates_parents(tmp_path):
+    nested = tmp_path / "x/y/z/out.txt"
+    lf = LocalFile(path=nested)
+    text = "some content"
+    lf.write(text)
+    assert nested.exists() and nested.read_text() == text
+

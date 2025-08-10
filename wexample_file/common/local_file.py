@@ -42,3 +42,32 @@ class LocalFile(AbstractLocalItemPath):
             # Fallback for older Python: check existence first
             if self.path.exists():
                 self.path.unlink()
+
+    def read(self, encoding: str = "utf-8") -> str | None:
+        """Read and return the file content as text, or None if it doesn't exist.
+
+        Parameters:
+            encoding: Text encoding used to decode file content. Defaults to 'utf-8'.
+        """
+        if not self.path.exists() or not self.path.is_file():
+            return None
+
+        return self.path.read_text(encoding=encoding)
+
+    def touch(self, parents: bool = True, exist_ok: bool = True) -> bool:
+        if parents:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+        if self.path.exists() or self.path.is_dir():
+            return False
+
+        self.path.touch(exist_ok=exist_ok)
+        return True
+
+    def write(self, content: str, encoding: str = "utf-8", make_parents: bool = True) -> bool:
+        if make_parents:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+        if self.path.exists() or self.path.is_dir():
+            return False
+
+        self.path.write_text(content, encoding=encoding)
+        return True
