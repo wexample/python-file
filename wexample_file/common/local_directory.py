@@ -46,3 +46,9 @@ class LocalDirectory(AbstractLocalItemPath):
                 self.path.unlink()
             except FileNotFoundError:
                 pass
+
+    def create(self, parents: bool = True, exist_ok: bool = True) -> None:
+        if self.path.exists() and self.path.is_file():
+            return None
+
+        self.path.mkdir(parents=parents, exist_ok=exist_ok)

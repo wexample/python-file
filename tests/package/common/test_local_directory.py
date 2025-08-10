@@ -66,3 +66,11 @@ def test_local_directory_remove_idempotent(tmp_path):
     assert not d.exists()
     # Idempotent second call
     ld2.remove()
+
+
+def test_local_directory_create_creates_directory_and_parents(tmp_path):
+    d = tmp_path / "a/b/c"
+    ld = LocalDirectory(path=d)
+    assert not d.exists()
+    ld.create()
+    assert d.exists() and d.is_dir()
