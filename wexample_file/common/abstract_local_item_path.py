@@ -31,8 +31,8 @@ class AbstractLocalItemPath(BaseModel, ABC):
 
     @model_validator(mode="after")
     def _validate_existence(self):
-        """If should_exist is True, ensure the path exists."""
-        if self.should_exist and not self.path.exists():
+        """If check_exists is True, ensure the path exists."""
+        if self.check_exists and not self.path.exists():
             # Defer to subclass to choose the most specific exception
             exc = self._not_found_exc()
             if exc is None:
@@ -74,7 +74,7 @@ class AbstractLocalItemPath(BaseModel, ABC):
         return str(self.path)
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}(path={repr(str(self.path))}, should_exist={self.should_exist})"
+        return f"{self.__class__.__name__}(path={repr(str(self.path))}, check_exists={self.check_exists})"
 
     def __eq__(self, other) -> bool:
         if isinstance(other, AbstractLocalItemPath):

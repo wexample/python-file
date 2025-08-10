@@ -28,18 +28,18 @@ def test_local_directory_rejects_file(tmp_path):
         LocalDirectory(path=f)
 
 
-def test_local_directory_should_exist_true_accepts_existing_dir(tmp_path):
+def test_local_directory_check_exists_true_accepts_existing_dir(tmp_path):
     d = tmp_path / "exists_dir"
     d.mkdir()
-    ld = LocalDirectory(path=d, should_exist=True)
+    ld = LocalDirectory(path=d, check_exists=True)
     assert ld.path == d.resolve()
 
 
-def test_local_directory_should_exist_true_rejects_missing(tmp_path):
+def test_local_directory_check_exists_true_rejects_missing(tmp_path):
     d = tmp_path / "missing_dir2"
     assert not d.exists()
     with pytest.raises(DirectoryNotFoundException):
-        LocalDirectory(path=d, should_exist=True)
+        LocalDirectory(path=d, check_exists=True)
 
 
 def test_local_directory_remove_deletes_directory_recursively(tmp_path):
@@ -47,7 +47,7 @@ def test_local_directory_remove_deletes_directory_recursively(tmp_path):
     sub = d / "sub"
     sub.mkdir(parents=True)
     (sub / "file.txt").write_text("hello")
-    ld = LocalDirectory(path=d, should_exist=True)
+    ld = LocalDirectory(path=d, check_exists=True)
     assert d.exists() and d.is_dir()
     ld.remove()
     assert not d.exists()
@@ -61,7 +61,7 @@ def test_local_directory_remove_idempotent(tmp_path):
     assert not d.exists()
     # Create then remove, then remove again
     d.mkdir()
-    ld2 = LocalDirectory(path=d, should_exist=True)
+    ld2 = LocalDirectory(path=d, check_exists=True)
     ld2.remove()
     assert not d.exists()
     # Idempotent second call
