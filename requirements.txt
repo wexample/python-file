@@ -45,7 +45,7 @@ typing-extensions==4.14.1
     #   typing-inspection
 typing-inspection==0.4.1
     # via pydantic
-wexample-helpers==0.0.62
+wexample-helpers==0.0.63
     # via -r requirements.in
 wheel==0.45.1
     # via pip-tools
