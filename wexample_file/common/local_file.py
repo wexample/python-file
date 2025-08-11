@@ -90,3 +90,6 @@ class LocalFile(AbstractLocalItemPath):
         target = self.path.with_suffix(suffix)
 
         self.path.replace(target)
+
+    def is_empty(self) -> bool:
+        return Path(self.path).stat().st_size == 0
