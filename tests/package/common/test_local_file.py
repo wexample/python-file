@@ -1,8 +1,10 @@
-import pytest
 from pathlib import Path
+
+import pytest
 from wexample_file.common.local_file import LocalFile
+from wexample_file.excpetion.file_not_found_exception import \
+    FileNotFoundException
 from wexample_file.excpetion.not_a_file_exception import NotAFileException
-from wexample_file.excpetion.file_not_found_exception import FileNotFoundException
 
 
 def test_local_file_instantiation_with_str(tmp_path):

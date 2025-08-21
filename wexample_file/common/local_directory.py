@@ -1,11 +1,11 @@
 from pathlib import Path
 
 from pydantic import field_validator
+from wexample_file.excpetion.directory_not_found_exception import \
+    DirectoryNotFoundException
+from wexample_file.excpetion.not_a_directory_exception import \
+    NotADirectoryException
 
-from wexample_file.excpetion.directory_not_found_exception import (
-    DirectoryNotFoundException,
-)
-from wexample_file.excpetion.not_a_directory_exception import NotADirectoryException
 from .abstract_local_item_path import AbstractLocalItemPath
 
 

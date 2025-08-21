@@ -1,11 +1,11 @@
-import pytest
 from pathlib import Path
 
+import pytest
 from wexample_file.common.local_directory import LocalDirectory
-from wexample_file.excpetion.not_a_directory_exception import NotADirectoryException
-from wexample_file.excpetion.directory_not_found_exception import (
-    DirectoryNotFoundException,
-)
+from wexample_file.excpetion.directory_not_found_exception import \
+    DirectoryNotFoundException
+from wexample_file.excpetion.not_a_directory_exception import \
+    NotADirectoryException
 
 
 def test_local_directory_instantiation_with_str(tmp_path):
