@@ -1,8 +1,7 @@
 from pathlib import Path
 
 from pydantic import field_validator
-from wexample_file.excpetion.file_not_found_exception import \
-    FileNotFoundException
+from wexample_file.excpetion.file_not_found_exception import FileNotFoundException
 from wexample_file.excpetion.not_a_file_exception import NotAFileException
 
 from .abstract_local_item_path import AbstractLocalItemPath
