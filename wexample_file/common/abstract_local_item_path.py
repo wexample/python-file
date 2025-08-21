@@ -2,7 +2,9 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 from pydantic import BaseModel, Field, field_validator, model_validator
-from wexample_file.excpetion.local_path_not_found_exception import LocalPathNotFoundException
+from wexample_file.excpetion.local_path_not_found_exception import (
+    LocalPathNotFoundException,
+)
 
 
 class AbstractLocalItemPath(BaseModel, ABC):
@@ -12,6 +14,7 @@ class AbstractLocalItemPath(BaseModel, ABC):
     resolved absolute Path (with user home expanded). This keeps comparisons and
     downstream usage consistent regardless of how the input was provided.
     """
+
     path: Path = Field(description="The path to the file or directory")
     check_exists: bool = False
 

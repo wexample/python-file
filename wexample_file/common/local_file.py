@@ -63,9 +63,10 @@ class LocalFile(AbstractLocalItemPath):
         self.path.touch(exist_ok=exist_ok)
         return True
 
-    def write(self, content: str, encoding: str = "utf-8", make_parents: bool = True) -> None:
-        """Write text content to the file, creating it if necessary.
-        """
+    def write(
+        self, content: str, encoding: str = "utf-8", make_parents: bool = True
+    ) -> None:
+        """Write text content to the file, creating it if necessary."""
         if make_parents:
             self.path.parent.mkdir(parents=True, exist_ok=True)
         if self.path.exists() and self.path.is_dir():

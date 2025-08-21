@@ -2,7 +2,9 @@ from pathlib import Path
 
 from pydantic import field_validator
 
-from wexample_file.excpetion.directory_not_found_exception import DirectoryNotFoundException
+from wexample_file.excpetion.directory_not_found_exception import (
+    DirectoryNotFoundException,
+)
 from wexample_file.excpetion.not_a_directory_exception import NotADirectoryException
 from .abstract_local_item_path import AbstractLocalItemPath
 
@@ -39,6 +41,7 @@ class LocalDirectory(AbstractLocalItemPath):
         if self.path.is_dir():
             # Remove contents recursively
             import shutil
+
             shutil.rmtree(self.path)
         else:
             # If for some reason it's not a dir anymore, best-effort unlink
