@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from wexample_file.excpetion.local_path_not_found_exception import (
     LocalPathNotFoundException,
 )
