@@ -82,9 +82,19 @@ class LocalFile(AbstractLocalItemPath):
             "archive.tar.gz" -> "gz"
             "report.pdf" -> "pdf"
             "README" -> ""
+            Dotfiles without other dots (e.g. ".env") -> "env"
         """
+        # Primary: use pathlib suffix when present
         suf = self.path.suffix
-        return suf[1:] if suf.startswith(".") else ""
+        if suf.startswith("."):
+            return suf[1:]
+
+        # Special-case: dotfiles like ".env" (no formal suffix)
+        name = self.path.name
+        if name.startswith(".") and len(name) > 1 and "." not in name[1:]:
+            return name[1:]
+
+        return ""
 
     def change_extension(self, new_extension: str) -> None:
         # Normalize extension: allow callers to pass with or without dot
