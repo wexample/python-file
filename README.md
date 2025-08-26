@@ -1,17 +1,33 @@
 # wexample-file
 
-Tools to manage the state of files and directories using simple YAML configuration files.
+Package that allows you to manage the state of files and directories using YAML configuration files.
 
-- Project: https://github.com/wexample/python-file
-- License: MIT
+Version: 0.0.3
 
-Install:
+## Requirements
+
+- Python >=3.10
+
+## Dependencies
+
+- pydantic>=2,<3
+- wexample-helpers==0.0.64
+
+## Installation
+
 ```bash
 pip install wexample-file
 ```
 
-Quick start:
-```python
-from wexample_file import *
-# TODO: usage examples will go here
-```
+## Links
+
+- Homepage: https://github.com/wexample/python-file
+
+## License
+
+MIT
+## Credits
+
+This package has been developed by [Wexample](https://wexample.com), a collection of tools and utilities to streamline development workflows.
+
+Visit [wexample.com](https://wexample.com) to discover more tools and resources for efficient development.
