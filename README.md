@@ -2,7 +2,7 @@
 
 Package that allows you to manage the state of files and directories using YAML configuration files.
 
-Version: 0.0.3
+Version: 0.0.4
 
 ## Requirements
 
