@@ -2,7 +2,7 @@
 
 Package that allows you to manage the state of files and directories using YAML configuration files.
 
-Version: 0.0.5
+Version: 0.0.6
 
 ## Requirements
 
@@ -11,7 +11,7 @@ Version: 0.0.5
 ## Dependencies
 
 - pydantic>=2,<3
-- wexample-helpers==0.0.66
+- wexample-helpers==0.0.67
 
 ## Installation
 
