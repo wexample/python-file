@@ -30,7 +30,7 @@ class LocalDirectory(AbstractLocalItemPath):
 
         return PATH_NAME_DIRECTORY
 
-    def _not_found_exc(self):
+    def _not_found_exc(self) -> DirectoryNotFoundException:
         return DirectoryNotFoundException(self.path)
 
     def remove(self) -> None:
