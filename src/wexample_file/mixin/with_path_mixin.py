@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pathlib import Path
 
 from pydantic import Field, field_validator
@@ -6,8 +8,7 @@ from wexample_helpers.const.types import PathOrString
 
 class WithPathMixin:
     path: Path | None = Field(
-        default=None,
-        description="The local file or directory path"
+        default=None, description="The local file or directory path"
     )
 
     def get_path(self) -> Path:
