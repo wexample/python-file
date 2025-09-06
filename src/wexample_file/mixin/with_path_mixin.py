@@ -14,4 +14,5 @@ class WithPathMixin:
 
     def set_path(self, path: PathOrString | None) -> None:
         from pathlib import Path
+
         self.path = None if path is None else Path(path)

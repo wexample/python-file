@@ -1,12 +1,17 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from pydantic import field_validator
 
 from .abstract_local_item_path import AbstractLocalItemPath
-from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
-    from wexample_file.excpetion.directory_not_found_exception import DirectoryNotFoundException
     from pathlib import Path
+
+    from wexample_file.excpetion.directory_not_found_exception import (
+        DirectoryNotFoundException,
+    )
 
 
 class LocalDirectory(AbstractLocalItemPath):

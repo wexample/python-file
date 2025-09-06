@@ -1,12 +1,15 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from pydantic import field_validator
 
 from .abstract_local_item_path import AbstractLocalItemPath
-from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
-    from wexample_file.excpetion.file_not_found_exception import FileNotFoundException
     from pathlib import Path
+
+    from wexample_file.excpetion.file_not_found_exception import FileNotFoundException
 
 
 class LocalFile(AbstractLocalItemPath):
@@ -20,6 +23,7 @@ class LocalFile(AbstractLocalItemPath):
     @classmethod
     def _validate_is_file(cls, v: Path) -> Path:
         from wexample_file.excpetion.not_a_file_exception import NotAFileException
+
         # Only validate type when it exists; creation workflows may pass a non-existent path
         if v.exists() and not v.is_file():
             raise NotAFileException(v)
