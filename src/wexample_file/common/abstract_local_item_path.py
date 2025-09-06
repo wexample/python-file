@@ -4,9 +4,6 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 from pydantic import BaseModel, Field, field_validator, model_validator
-from wexample_file.excpetion.local_path_not_found_exception import (
-    LocalPathNotFoundException,
-)
 
 
 class AbstractLocalItemPath(BaseModel, ABC):
@@ -37,6 +34,7 @@ class AbstractLocalItemPath(BaseModel, ABC):
     @model_validator(mode="after")
     def _validate_existence(self):
         """If check_exists is True, ensure the path exists."""
+        from wexample_file.excpetion.local_path_not_found_exception import LocalPathNotFoundException
         if self.check_exists and not self.path.exists():
             # Defer to subclass to choose the most specific exception
             exc = self._not_found_exc()
