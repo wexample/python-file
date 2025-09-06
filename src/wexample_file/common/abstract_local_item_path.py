@@ -3,7 +3,9 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field
+
+from wexample_helpers.const.types import PathOrString
 
 
 class AbstractLocalItemPath(ABC):
@@ -17,34 +19,30 @@ class AbstractLocalItemPath(ABC):
     path: Path = Field(description="The path to the file or directory")
     check_exists: bool = False
 
-    @field_validator("path", mode="before")
-    @classmethod
-    def _coerce_and_resolve_path(cls, v):
+    def __init__(self, path: PathOrString, check_exists: bool = False):
         """Coerce input into a resolved Path.
 
         - Accepts str or Path
         - Expands '~' and resolves to an absolute path with strict=False
         """
-        if isinstance(v, str):
-            v = Path(v)
-        if isinstance(v, Path):
-            return v.expanduser().resolve(strict=False)
-        raise TypeError("path must be a str or pathlib.Path")
+        if isinstance(path, str):
+            self.path = Path(path)
+        if isinstance(path, Path):
+            self.path = path.expanduser().resolve(strict=False)
+        else:
+            raise TypeError("path must be a str or pathlib.Path")
 
-    @model_validator(mode="after")
-    def _validate_existence(self):
         """If check_exists is True, ensure the path exists."""
         from wexample_file.excpetion.local_path_not_found_exception import (
             LocalPathNotFoundException,
         )
-        if self.check_exists and not self.path.exists():
+        if check_exists and not self.path.exists():
             # Defer to subclass to choose the most specific exception
             exc = self._not_found_exc()
             if exc is None:
                 # Fallback to a generic not-found exception
                 raise LocalPathNotFoundException(self.path)
             raise exc
-        return self
 
     @abstractmethod
     def _kind(self) -> str:
@@ -79,7 +77,7 @@ class AbstractLocalItemPath(ABC):
         return str(self.path)
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}(path={repr(str(self.path))}, check_exists={self.check_exists})"
+        return f"{self.__class__.__name__}(path={repr(str(self.path))})"
 
     def __eq__(self, other) -> bool:
         if isinstance(other, AbstractLocalItemPath):
