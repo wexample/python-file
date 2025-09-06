@@ -3,12 +3,11 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-from pydantic import Field
-
+from wexample_file.mixin.with_path_mixin import WithPathMixin
 from wexample_helpers.const.types import PathOrString
 
 
-class AbstractLocalItemPath(ABC):
+class AbstractLocalItemPath(WithPathMixin, ABC):
     """Abstract base class for handling local file system paths.
 
     Accepts either a string or a pathlib.Path for ``path`` and always stores a
@@ -16,7 +15,7 @@ class AbstractLocalItemPath(ABC):
     downstream usage consistent regardless of how the input was provided.
     """
 
-    path: Path = Field(description="The path to the file or directory")
+    path: Path
     check_exists: bool = False
 
     def __init__(self, path: PathOrString, check_exists: bool = False):
@@ -32,17 +31,8 @@ class AbstractLocalItemPath(ABC):
         else:
             raise TypeError("path must be a str or pathlib.Path")
 
-        """If check_exists is True, ensure the path exists."""
-        from wexample_file.excpetion.local_path_not_found_exception import (
-            LocalPathNotFoundException,
-        )
-        if check_exists and not self.path.exists():
-            # Defer to subclass to choose the most specific exception
-            exc = self._not_found_exc()
-            if exc is None:
-                # Fallback to a generic not-found exception
-                raise LocalPathNotFoundException(self.path)
-            raise exc
+        if check_exists:
+            self._check_exists()
 
     @abstractmethod
     def _kind(self) -> str:
@@ -50,16 +40,6 @@ class AbstractLocalItemPath(ABC):
 
         Subclasses must implement this to mark the class as abstract and to
         provide a simple discriminator for debugging and representation.
-        """
-
-    @abstractmethod
-    def _not_found_exc(self) -> Exception | None:
-        """Return a specific 'not found' exception instance for this item type.
-
-        Subclasses should return an instance of a custom exception that best
-        represents the missing path for their type (e.g., FileNotFoundException
-        or DirectoryNotFoundException). Returning None will make the base class
-        fall back to LocalPathNotFoundException.
         """
 
     @abstractmethod

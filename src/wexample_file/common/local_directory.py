@@ -2,13 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from pydantic import field_validator
-
 from .abstract_local_item_path import AbstractLocalItemPath
 
 if TYPE_CHECKING:
-    from pathlib import Path
-
     from wexample_file.excpetion.directory_not_found_exception import (
         DirectoryNotFoundException,
     )
@@ -21,15 +17,16 @@ class LocalDirectory(AbstractLocalItemPath):
     be a directory.
     """
 
-    @field_validator("path")
-    @classmethod
-    def _validate_is_dir(cls, v: Path) -> Path:
+    def _check_exists(self):
         from wexample_file.excpetion.not_a_directory_exception import (
             NotADirectoryException,
         )
-        if v.exists() and not v.is_dir():
-            raise NotADirectoryException(v)
-        return v
+
+        super()._check_exists()
+
+        if self.path.exists() and not self.path.is_dir():
+            raise NotADirectoryException(self.path)
+        return self.path
 
     def _kind(self) -> str:
         from wexample_file.const.globals import PATH_NAME_DIRECTORY

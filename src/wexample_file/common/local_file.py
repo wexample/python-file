@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from pydantic import field_validator
-
 from .abstract_local_item_path import AbstractLocalItemPath
 
 if TYPE_CHECKING:
@@ -19,15 +17,13 @@ class LocalFile(AbstractLocalItemPath):
     be a file.
     """
 
-    @field_validator("path")
-    @classmethod
-    def _validate_is_file(cls, v: Path) -> Path:
+    def _check_exists(self):
         from wexample_file.excpetion.not_a_file_exception import NotAFileException
+        super()._check_exists()
 
         # Only validate type when it exists; creation workflows may pass a non-existent path
-        if v.exists() and not v.is_file():
-            raise NotAFileException(v)
-        return v
+        if self.path.exists() and not self.path.is_file():
+            raise NotAFileException(self.path)
 
     def _kind(self) -> str:
         from wexample_file.const.globals import PATH_NAME_FILE
@@ -74,7 +70,7 @@ class LocalFile(AbstractLocalItemPath):
         return True
 
     def write(
-        self, content: str, encoding: str = "utf-8", make_parents: bool = True
+            self, content: str, encoding: str = "utf-8", make_parents: bool = True
     ) -> None:
         """Write text content to the file, creating it if necessary."""
         from wexample_file.excpetion.not_a_file_exception import NotAFileException
