@@ -3,10 +3,10 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import Field, field_validator, model_validator
 
 
-class AbstractLocalItemPath(BaseModel, ABC):
+class AbstractLocalItemPath(ABC):
     """Abstract base class for handling local file system paths.
 
     Accepts either a string or a pathlib.Path for ``path`` and always stores a

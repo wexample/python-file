@@ -16,7 +16,6 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "pydantic>=2,<3",
     "wexample-helpers==0.0.67",
 ]
 
