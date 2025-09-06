@@ -35,7 +35,9 @@ class LocalFile(AbstractLocalItemPath):
         return PATH_NAME_FILE
 
     def _not_found_exc(self) -> FileNotFoundException:
-        from wexample_file.excpetion.file_not_found_exception import FileNotFoundException
+        from wexample_file.excpetion.file_not_found_exception import (
+            FileNotFoundException,
+        )
         return FileNotFoundException(self.path)
 
     def remove(self) -> None:

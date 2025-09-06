@@ -4,8 +4,9 @@ import pytest
 
 
 def test_local_directory_instantiation_with_str(tmp_path) -> None:
-    from wexample_file.common.local_directory import LocalDirectory
     from pathlib import Path
+
+    from wexample_file.common.local_directory import LocalDirectory
     d = tmp_path / "adir"
     d.mkdir()
     ld = LocalDirectory(path=str(d))
@@ -39,8 +40,10 @@ def test_local_directory_check_exists_true_accepts_existing_dir(tmp_path) -> Non
 
 
 def test_local_directory_check_exists_true_rejects_missing(tmp_path) -> None:
-    from wexample_file.excpetion.directory_not_found_exception import DirectoryNotFoundException
     from wexample_file.common.local_directory import LocalDirectory
+    from wexample_file.excpetion.directory_not_found_exception import (
+        DirectoryNotFoundException,
+    )
     d = tmp_path / "missing_dir2"
     assert not d.exists()
     with pytest.raises(DirectoryNotFoundException):

@@ -24,7 +24,9 @@ class LocalDirectory(AbstractLocalItemPath):
     @field_validator("path")
     @classmethod
     def _validate_is_dir(cls, v: Path) -> Path:
-        from wexample_file.excpetion.not_a_directory_exception import NotADirectoryException
+        from wexample_file.excpetion.not_a_directory_exception import (
+            NotADirectoryException,
+        )
         if v.exists() and not v.is_dir():
             raise NotADirectoryException(v)
         return v
@@ -35,7 +37,9 @@ class LocalDirectory(AbstractLocalItemPath):
         return PATH_NAME_DIRECTORY
 
     def _not_found_exc(self) -> DirectoryNotFoundException:
-        from wexample_file.excpetion.directory_not_found_exception import DirectoryNotFoundException
+        from wexample_file.excpetion.directory_not_found_exception import (
+            DirectoryNotFoundException,
+        )
         return DirectoryNotFoundException(self.path)
 
     def remove(self) -> None:

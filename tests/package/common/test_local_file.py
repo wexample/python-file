@@ -4,8 +4,9 @@ import pytest
 
 
 def test_local_file_instantiation_with_str(tmp_path) -> None:
-    from wexample_file.common.local_file import LocalFile
     from pathlib import Path
+
+    from wexample_file.common.local_file import LocalFile
     p = tmp_path / "file.txt"
     p.write_text("hello")
     lf = LocalFile(path=str(p))
@@ -39,8 +40,8 @@ def test_local_file_check_exists_true_accepts_existing_file(tmp_path) -> None:
 
 
 def test_local_file_check_exists_true_rejects_missing(tmp_path) -> None:
-    from wexample_file.excpetion.file_not_found_exception import FileNotFoundException
     from wexample_file.common.local_file import LocalFile
+    from wexample_file.excpetion.file_not_found_exception import FileNotFoundException
     p = tmp_path / "missing2.txt"
     assert not p.exists()
     with pytest.raises(FileNotFoundException):
