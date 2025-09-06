@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from pathlib import Path
-
 from pydantic import field_validator
-from wexample_file.excpetion.file_not_found_exception import FileNotFoundException
-from wexample_file.excpetion.not_a_file_exception import NotAFileException
 
 from .abstract_local_item_path import AbstractLocalItemPath
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from wexample_file.excpetion.file_not_found_exception import FileNotFoundException
+    from pathlib import Path
 
 
 class LocalFile(AbstractLocalItemPath):
@@ -19,6 +19,7 @@ class LocalFile(AbstractLocalItemPath):
     @field_validator("path")
     @classmethod
     def _validate_is_file(cls, v: Path) -> Path:
+        from wexample_file.excpetion.not_a_file_exception import NotAFileException
         # Only validate type when it exists; creation workflows may pass a non-existent path
         if v.exists() and not v.is_file():
             raise NotAFileException(v)
@@ -30,6 +31,7 @@ class LocalFile(AbstractLocalItemPath):
         return PATH_NAME_FILE
 
     def _not_found_exc(self) -> FileNotFoundException:
+        from wexample_file.excpetion.file_not_found_exception import FileNotFoundException
         return FileNotFoundException(self.path)
 
     def remove(self) -> None:
@@ -69,6 +71,7 @@ class LocalFile(AbstractLocalItemPath):
         self, content: str, encoding: str = "utf-8", make_parents: bool = True
     ) -> None:
         """Write text content to the file, creating it if necessary."""
+        from wexample_file.excpetion.not_a_file_exception import NotAFileException
         if make_parents:
             self.path.parent.mkdir(parents=True, exist_ok=True)
         if self.path.exists() and self.path.is_dir():
@@ -105,4 +108,5 @@ class LocalFile(AbstractLocalItemPath):
         self.path.replace(target)
 
     def is_empty(self) -> bool:
+        from pathlib import Path
         return Path(self.path).stat().st_size == 0
