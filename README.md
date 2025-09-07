@@ -10,6 +10,8 @@ Version: 0.0.6
 
 ## Dependencies
 
+- attrs>=23.1.0
+- cattrs>=23.1.0
 - wexample-helpers==0.0.67
 
 ## Installation
