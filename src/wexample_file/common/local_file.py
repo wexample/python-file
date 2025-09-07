@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from .abstract_local_item_path import AbstractLocalItemPath
 
 if TYPE_CHECKING:
-    from pathlib import Path
+    pass
 
     from wexample_file.excpetion.file_not_found_exception import FileNotFoundException
 
