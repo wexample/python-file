@@ -3,37 +3,6 @@ from __future__ import annotations
 import pytest
 
 
-def test_local_directory_instantiation_with_str(tmp_path) -> None:
-    from pathlib import Path
-
-    from wexample_file.common.local_directory import LocalDirectory
-
-    d = tmp_path / "adir"
-    d.mkdir()
-    ld = LocalDirectory(path=str(d))
-    assert isinstance(ld.path, Path)
-    assert ld.path == d.resolve()
-
-
-def test_local_directory_instantiation_with_path_nonexistent(tmp_path) -> None:
-    from wexample_file.common.local_directory import LocalDirectory
-
-    d = tmp_path / "missing_dir"
-    assert not d.exists()
-    ld = LocalDirectory(path=d)
-    assert ld.path == d.resolve()
-
-
-def test_local_directory_rejects_file(tmp_path) -> None:
-    from wexample_file.common.local_directory import LocalDirectory
-    from wexample_file.excpetion.not_a_directory_exception import NotADirectoryException
-
-    f = tmp_path / "afile.txt"
-    f.write_text("hello")
-    with pytest.raises(NotADirectoryException):
-        LocalDirectory(path=f)
-
-
 def test_local_directory_check_exists_true_accepts_existing_dir(tmp_path) -> None:
     from wexample_file.common.local_directory import LocalDirectory
 
@@ -53,6 +22,47 @@ def test_local_directory_check_exists_true_rejects_missing(tmp_path) -> None:
     assert not d.exists()
     with pytest.raises(DirectoryNotFoundException):
         LocalDirectory(path=d, check_exists=True)
+
+
+def test_local_directory_create_creates_directory_and_parents(tmp_path) -> None:
+    from wexample_file.common.local_directory import LocalDirectory
+
+    d = tmp_path / "a/b/c"
+    ld = LocalDirectory(path=d)
+    assert not d.exists()
+    ld.create()
+    assert d.exists() and d.is_dir()
+
+
+def test_local_directory_instantiation_with_path_nonexistent(tmp_path) -> None:
+    from wexample_file.common.local_directory import LocalDirectory
+
+    d = tmp_path / "missing_dir"
+    assert not d.exists()
+    ld = LocalDirectory(path=d)
+    assert ld.path == d.resolve()
+
+
+def test_local_directory_instantiation_with_str(tmp_path) -> None:
+    from pathlib import Path
+
+    from wexample_file.common.local_directory import LocalDirectory
+
+    d = tmp_path / "adir"
+    d.mkdir()
+    ld = LocalDirectory(path=str(d))
+    assert isinstance(ld.path, Path)
+    assert ld.path == d.resolve()
+
+
+def test_local_directory_rejects_file(tmp_path) -> None:
+    from wexample_file.common.local_directory import LocalDirectory
+    from wexample_file.excpetion.not_a_directory_exception import NotADirectoryException
+
+    f = tmp_path / "afile.txt"
+    f.write_text("hello")
+    with pytest.raises(NotADirectoryException):
+        LocalDirectory(path=f)
 
 
 def test_local_directory_remove_deletes_directory_recursively(tmp_path) -> None:
@@ -83,13 +93,3 @@ def test_local_directory_remove_idempotent(tmp_path) -> None:
     assert not d.exists()
     # Idempotent second call
     ld2.remove()
-
-
-def test_local_directory_create_creates_directory_and_parents(tmp_path) -> None:
-    from wexample_file.common.local_directory import LocalDirectory
-
-    d = tmp_path / "a/b/c"
-    ld = LocalDirectory(path=d)
-    assert not d.exists()
-    ld.create()
-    assert d.exists() and d.is_dir()
