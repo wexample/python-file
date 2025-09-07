@@ -17,7 +17,7 @@ class LocalFile(AbstractLocalItemPath):
     be a file.
     """
 
-    def _check_exists(self):
+    def _check_exists(self) -> None:
         from wexample_file.excpetion.not_a_file_exception import NotAFileException
         super()._check_exists()
 

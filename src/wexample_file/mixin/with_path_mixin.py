@@ -9,7 +9,7 @@ from wexample_helpers.const.types import PathOrString
 class WithPathMixin:
     path: Any = None
 
-    def _check_exists(self):
+    def _check_exists(self) -> None:
         """If check_exists is True, ensure the path exists."""
         from wexample_file.excpetion.local_path_not_found_exception import (
             LocalPathNotFoundException,

@@ -37,6 +37,7 @@ class LocalDirectory(AbstractLocalItemPath):
         from wexample_file.excpetion.directory_not_found_exception import (
             DirectoryNotFoundException,
         )
+
         return DirectoryNotFoundException(self.path)
 
     def remove(self) -> None:

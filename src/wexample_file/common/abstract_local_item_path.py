@@ -18,7 +18,7 @@ class AbstractLocalItemPath(WithPathMixin, ABC):
     path: Path
     check_exists: bool = False
 
-    def __init__(self, path: PathOrString, check_exists: bool = False):
+    def __init__(self, path: PathOrString, check_exists: bool = False) -> None:
         """Coerce input into a resolved Path.
 
         - Accepts str or Path
