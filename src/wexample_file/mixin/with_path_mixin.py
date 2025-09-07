@@ -14,6 +14,7 @@ class WithPathMixin:
         from wexample_file.excpetion.local_path_not_found_exception import (
             LocalPathNotFoundException,
         )
+
         if not self.path.exists():
             # Defer to subclass to choose the most specific exception
             exc = self._not_found_exc()

@@ -19,6 +19,7 @@ class LocalFile(AbstractLocalItemPath):
 
     def _check_exists(self) -> None:
         from wexample_file.excpetion.not_a_file_exception import NotAFileException
+
         super()._check_exists()
 
         # Only validate type when it exists; creation workflows may pass a non-existent path
@@ -34,6 +35,7 @@ class LocalFile(AbstractLocalItemPath):
         from wexample_file.excpetion.file_not_found_exception import (
             FileNotFoundException,
         )
+
         return FileNotFoundException(self.path)
 
     def remove(self) -> None:
@@ -70,10 +72,11 @@ class LocalFile(AbstractLocalItemPath):
         return True
 
     def write(
-            self, content: str, encoding: str = "utf-8", make_parents: bool = True
+        self, content: str, encoding: str = "utf-8", make_parents: bool = True
     ) -> None:
         """Write text content to the file, creating it if necessary."""
         from wexample_file.excpetion.not_a_file_exception import NotAFileException
+
         if make_parents:
             self.path.parent.mkdir(parents=True, exist_ok=True)
         if self.path.exists() and self.path.is_dir():
@@ -111,4 +114,5 @@ class LocalFile(AbstractLocalItemPath):
 
     def is_empty(self) -> bool:
         from pathlib import Path
+
         return Path(self.path).stat().st_size == 0
