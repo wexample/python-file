@@ -14,9 +14,9 @@ class AbstractLocalItemPath(WithPathMixin, ABC):
     resolved absolute Path (with user home expanded). This keeps comparisons and
     downstream usage consistent regardless of how the input was provided.
     """
+    check_exists: bool = False
 
     path: Path
-    check_exists: bool = False
 
     def __init__(self, path: PathOrString, check_exists: bool = False) -> None:
         """Coerce input into a resolved Path.
