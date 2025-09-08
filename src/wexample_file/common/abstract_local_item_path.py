@@ -15,7 +15,6 @@ class AbstractLocalItemPath(WithPathMixin, ABC):
     downstream usage consistent regardless of how the input was provided.
     """
     check_exists: bool = False
-
     path: Path
 
     def __init__(self, path: PathOrString, check_exists: bool = False) -> None:
