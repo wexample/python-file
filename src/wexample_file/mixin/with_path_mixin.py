@@ -9,6 +9,15 @@ from wexample_helpers.const.types import PathOrString
 class WithPathMixin:
     path: Any = None
 
+    def get_path(self) -> Any:
+        assert self.path is not None
+        return self.path
+
+    def set_path(self, path: PathOrString | None) -> None:
+        from pathlib import Path
+
+        self.path = None if path is None else Path(path)
+
     def _check_exists(self) -> None:
         """If check_exists is True, ensure the path exists."""
         from wexample_file.excpetion.local_path_not_found_exception import (
@@ -22,15 +31,6 @@ class WithPathMixin:
                 # Fallback to a generic not-found exception
                 raise LocalPathNotFoundException(self.path)
             raise exc
-
-    def get_path(self) -> Any:
-        assert self.path is not None
-        return self.path
-
-    def set_path(self, path: PathOrString | None) -> None:
-        from pathlib import Path
-
-        self.path = None if path is None else Path(path)
 
     @abstractmethod
     def _not_found_exc(self) -> Exception | None:

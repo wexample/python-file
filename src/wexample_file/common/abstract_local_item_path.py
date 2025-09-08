@@ -34,13 +34,19 @@ class AbstractLocalItemPath(WithPathMixin, ABC):
         if check_exists:
             self._check_exists()
 
-    @abstractmethod
-    def _kind(self) -> str:
-        """Return the kind of local item (e.g., 'file' or 'directory').
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(path={repr(str(self.path))})"
 
-        Subclasses must implement this to mark the class as abstract and to
-        provide a simple discriminator for debugging and representation.
-        """
+    def __str__(self) -> str:
+        return str(self.path)
+
+    def __eq__(self, other) -> bool:
+        if isinstance(other, AbstractLocalItemPath):
+            return self.path == other.path
+        if isinstance(other, (str, Path)):
+            other_path = Path(other).expanduser().resolve(strict=False)
+            return self.path == other_path
+        return NotImplemented
 
     @abstractmethod
     def remove(self) -> None:
@@ -53,16 +59,10 @@ class AbstractLocalItemPath(WithPathMixin, ABC):
           the method should complete without raising.
         """
 
-    def __str__(self) -> str:
-        return str(self.path)
+    @abstractmethod
+    def _kind(self) -> str:
+        """Return the kind of local item (e.g., 'file' or 'directory').
 
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}(path={repr(str(self.path))})"
-
-    def __eq__(self, other) -> bool:
-        if isinstance(other, AbstractLocalItemPath):
-            return self.path == other.path
-        if isinstance(other, (str, Path)):
-            other_path = Path(other).expanduser().resolve(strict=False)
-            return self.path == other_path
-        return NotImplemented
+        Subclasses must implement this to mark the class as abstract and to
+        provide a simple discriminator for debugging and representation.
+        """

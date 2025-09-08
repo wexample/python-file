@@ -17,71 +17,13 @@ class LocalFile(AbstractLocalItemPath):
     be a file.
     """
 
-    def _check_exists(self) -> None:
-        from wexample_file.excpetion.not_a_file_exception import NotAFileException
+    def change_extension(self, new_extension: str) -> None:
+        # Normalize extension: allow callers to pass with or without dot
+        ext = new_extension.lstrip(".")
+        suffix = f".{ext}" if ext else ""
+        target = self.path.with_suffix(suffix)
 
-        super()._check_exists()
-
-        # Only validate type when it exists; creation workflows may pass a non-existent path
-        if self.path.exists() and not self.path.is_file():
-            raise NotAFileException(self.path)
-
-    def _kind(self) -> str:
-        from wexample_file.const.globals import PATH_NAME_FILE
-
-        return PATH_NAME_FILE
-
-    def _not_found_exc(self) -> FileNotFoundException:
-        from wexample_file.excpetion.file_not_found_exception import (
-            FileNotFoundException,
-        )
-
-        return FileNotFoundException(self.path)
-
-    def remove(self) -> None:
-        """Delete the file if it exists; no-op if it doesn't.
-
-        This method is idempotent and will not raise if the file is missing.
-        """
-        try:
-            # unlink(missing_ok=True) is available in Python 3.8+
-            self.path.unlink(missing_ok=True)
-        except TypeError:
-            # Fallback for older Python: check existence first
-            if self.path.exists():
-                self.path.unlink()
-
-    def read(self, encoding: str = "utf-8") -> str | None:
-        """Read and return the file content as text, or None if it doesn't exist.
-
-        Parameters:
-            encoding: Text encoding used to decode file content. Defaults to 'utf-8'.
-        """
-        if not self.path.exists() or not self.path.is_file():
-            return None
-
-        return self.path.read_text(encoding=encoding)
-
-    def touch(self, parents: bool = True, exist_ok: bool = True) -> bool:
-        if parents:
-            self.path.parent.mkdir(parents=True, exist_ok=True)
-        if self.path.exists() or self.path.is_dir():
-            return False
-
-        self.path.touch(exist_ok=exist_ok)
-        return True
-
-    def write(
-        self, content: str, encoding: str = "utf-8", make_parents: bool = True
-    ) -> None:
-        """Write text content to the file, creating it if necessary."""
-        from wexample_file.excpetion.not_a_file_exception import NotAFileException
-
-        if make_parents:
-            self.path.parent.mkdir(parents=True, exist_ok=True)
-        if self.path.exists() and self.path.is_dir():
-            raise NotAFileException(self.path)
-        self.path.write_text(content, encoding=encoding)
+        self.path.replace(target)
 
     def get_extension(self) -> str:
         """Return the last suffix without the leading dot.
@@ -104,15 +46,73 @@ class LocalFile(AbstractLocalItemPath):
 
         return ""
 
-    def change_extension(self, new_extension: str) -> None:
-        # Normalize extension: allow callers to pass with or without dot
-        ext = new_extension.lstrip(".")
-        suffix = f".{ext}" if ext else ""
-        target = self.path.with_suffix(suffix)
-
-        self.path.replace(target)
-
     def is_empty(self) -> bool:
         from pathlib import Path
 
         return Path(self.path).stat().st_size == 0
+
+    def read(self, encoding: str = "utf-8") -> str | None:
+        """Read and return the file content as text, or None if it doesn't exist.
+
+        Parameters:
+            encoding: Text encoding used to decode file content. Defaults to 'utf-8'.
+        """
+        if not self.path.exists() or not self.path.is_file():
+            return None
+
+        return self.path.read_text(encoding=encoding)
+
+    def remove(self) -> None:
+        """Delete the file if it exists; no-op if it doesn't.
+
+        This method is idempotent and will not raise if the file is missing.
+        """
+        try:
+            # unlink(missing_ok=True) is available in Python 3.8+
+            self.path.unlink(missing_ok=True)
+        except TypeError:
+            # Fallback for older Python: check existence first
+            if self.path.exists():
+                self.path.unlink()
+
+    def touch(self, parents: bool = True, exist_ok: bool = True) -> bool:
+        if parents:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+        if self.path.exists() or self.path.is_dir():
+            return False
+
+        self.path.touch(exist_ok=exist_ok)
+        return True
+
+    def write(
+        self, content: str, encoding: str = "utf-8", make_parents: bool = True
+    ) -> None:
+        """Write text content to the file, creating it if necessary."""
+        from wexample_file.excpetion.not_a_file_exception import NotAFileException
+
+        if make_parents:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+        if self.path.exists() and self.path.is_dir():
+            raise NotAFileException(self.path)
+        self.path.write_text(content, encoding=encoding)
+
+    def _check_exists(self) -> None:
+        from wexample_file.excpetion.not_a_file_exception import NotAFileException
+
+        super()._check_exists()
+
+        # Only validate type when it exists; creation workflows may pass a non-existent path
+        if self.path.exists() and not self.path.is_file():
+            raise NotAFileException(self.path)
+
+    def _kind(self) -> str:
+        from wexample_file.const.globals import PATH_NAME_FILE
+
+        return PATH_NAME_FILE
+
+    def _not_found_exc(self) -> FileNotFoundException:
+        from wexample_file.excpetion.file_not_found_exception import (
+            FileNotFoundException,
+        )
+
+        return FileNotFoundException(self.path)
