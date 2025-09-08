@@ -16,6 +16,7 @@ class LocalDirectory(AbstractLocalItemPath):
     The path is stored as a resolved absolute Path. If the path exists, it must
     be a directory.
     """
+
     def create(self, parents: bool = True, exist_ok: bool = True) -> None:
         if self.path.exists() and self.path.is_file():
             return None
