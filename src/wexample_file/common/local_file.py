@@ -16,7 +16,6 @@ class LocalFile(AbstractLocalItemPath):
     The path is stored as a resolved absolute Path. If the path exists, it must
     be a file.
     """
-
     def change_extension(self, new_extension: str) -> None:
         # Normalize extension: allow callers to pass with or without dot
         ext = new_extension.lstrip(".")

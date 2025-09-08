@@ -14,7 +14,6 @@ class AbstractLocalItemPath(WithPathMixin, ABC):
     resolved absolute Path (with user home expanded). This keeps comparisons and
     downstream usage consistent regardless of how the input was provided.
     """
-
     check_exists: bool = False
     path: Path
 
