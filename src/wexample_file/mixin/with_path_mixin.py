@@ -1,16 +1,20 @@
 from __future__ import annotations
 
-from abc import abstractmethod
+from pathlib import Path
 from typing import Any
 
 from wexample_helpers.classes.base_class import BaseClass
+from wexample_helpers.classes.field import public_field
 from wexample_helpers.const.types import PathOrString
 from wexample_helpers.decorator.base_class import base_class
 
 
 @base_class
 class WithPathMixin(BaseClass):
-    path: Any = None
+    path: Path | str | None = public_field(
+        description="The path of the file or directory",
+        default=None
+    )
 
     def get_path(self) -> Any:
         assert self.path is not None
