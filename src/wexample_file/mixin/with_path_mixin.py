@@ -3,10 +3,13 @@ from __future__ import annotations
 from abc import abstractmethod
 from typing import Any
 
+from wexample_helpers.classes.base_class import BaseClass
 from wexample_helpers.const.types import PathOrString
+from wexample_helpers.decorator.base_class import base_class
 
 
-class WithPathMixin:
+@base_class
+class WithPathMixin(BaseClass):
     path: Any = None
 
     def get_path(self) -> Any:
@@ -32,7 +35,6 @@ class WithPathMixin:
                 raise LocalPathNotFoundException(self.path)
             raise exc
 
-    @abstractmethod
     def _not_found_exc(self) -> Exception | None:
         """Return a specific 'not found' exception instance for this item type.
 
