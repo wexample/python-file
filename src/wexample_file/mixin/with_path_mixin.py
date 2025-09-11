@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 from wexample_helpers.classes.base_class import BaseClass
@@ -11,8 +12,7 @@ from wexample_helpers.decorator.base_class import base_class
 @base_class
 class WithPathMixin(BaseClass):
     path: Path | str | None = public_field(
-        description="The path of the file or directory",
-        default=None
+        description="The path of the file or directory", default=None
     )
 
     def get_path(self) -> Any:
