@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
 from pathlib import Path
 
 from wexample_file.mixin.with_path_mixin import WithPathMixin
 from wexample_helpers.const.types import PathOrString
+from wexample_helpers.classes.abstract_method import abstract_method
 
 
-class AbstractLocalItemPath(WithPathMixin, ABC):
+class AbstractLocalItemPath(WithPathMixin):
     """Abstract base class for handling local file system paths.
 
     Accepts either a string or a pathlib.Path for ``path`` and always stores a
@@ -48,7 +48,7 @@ class AbstractLocalItemPath(WithPathMixin, ABC):
             return self.path == other_path
         return NotImplemented
 
-    @abstractmethod
+    @abstract_method
     def remove(self) -> None:
         """Remove the underlying path from the filesystem.
 
@@ -59,7 +59,7 @@ class AbstractLocalItemPath(WithPathMixin, ABC):
           the method should complete without raising.
         """
 
-    @abstractmethod
+    @abstract_method
     def _kind(self) -> str:
         """Return the kind of local item (e.g., 'file' or 'directory').
 
