@@ -2,7 +2,7 @@
 
 Package that allows you to manage the state of files and directories using YAML configuration files.
 
-Version: 0.0.6
+Version: 0.0.7
 
 ## Requirements
 
@@ -12,7 +12,7 @@ Version: 0.0.6
 
 - attrs>=23.1.0
 - cattrs>=23.1.0
-- wexample-helpers==0.0.67
+- wexample-helpers==0.0.68
 
 ## Installation
 
