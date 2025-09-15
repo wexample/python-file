@@ -4,7 +4,7 @@ build-backend = "pdm.backend"
 
 [project]
 name = "wexample-file"
-version = "0.0.8"
+version = "0.0.9"
 description = "Package that allows you to manage the state of files and directories using YAML configuration files."
 authors = [
     { name = "weeger", email = "contact@wexample.com" },
@@ -18,7 +18,7 @@ classifiers = [
 dependencies = [
     "attrs>=23.1.0",
     "cattrs>=23.1.0",
-    "wexample-helpers==0.0.70",
+    "wexample-helpers==0.0.71",
 ]
 
 [project.readme]
