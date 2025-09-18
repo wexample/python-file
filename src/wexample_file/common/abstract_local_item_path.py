@@ -60,7 +60,7 @@ class AbstractLocalItemPath(WithPathMixin):
         """
 
     @abstract_method
-    def _kind(self) -> str:
+    def item_type(self) -> str:
         """Return the kind of local item (e.g., 'file' or 'directory').
 
         Subclasses must implement this to mark the class as abstract and to

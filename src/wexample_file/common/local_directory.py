@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from .abstract_local_item_path import AbstractLocalItemPath
+from ..enum.local_path_type import LocalPathType
 
 if TYPE_CHECKING:
     from wexample_file.excpetion.directory_not_found_exception import (
@@ -53,10 +54,8 @@ class LocalDirectory(AbstractLocalItemPath):
             raise NotADirectoryException(self.path)
         return self.path
 
-    def _kind(self) -> str:
-        from wexample_file.const.globals import PATH_NAME_DIRECTORY
-
-        return PATH_NAME_DIRECTORY
+    def item_type(self) -> LocalPathType:
+        return LocalPathType.DIRECTORY
 
     def _not_found_exc(self) -> DirectoryNotFoundException:
         from wexample_file.excpetion.directory_not_found_exception import (

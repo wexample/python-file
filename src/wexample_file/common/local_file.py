@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from .abstract_local_item_path import AbstractLocalItemPath
+from ..enum.local_path_type import LocalPathType
 
 if TYPE_CHECKING:
     pass
@@ -85,7 +86,7 @@ class LocalFile(AbstractLocalItemPath):
         return True
 
     def write(
-        self, content: str, encoding: str = "utf-8", make_parents: bool = True
+            self, content: str, encoding: str = "utf-8", make_parents: bool = True
     ) -> None:
         """Write text content to the file, creating it if necessary."""
         from wexample_file.excpetion.not_a_file_exception import NotAFileException
@@ -105,10 +106,8 @@ class LocalFile(AbstractLocalItemPath):
         if self.path.exists() and not self.path.is_file():
             raise NotAFileException(self.path)
 
-    def _kind(self) -> str:
-        from wexample_file.const.globals import PATH_NAME_FILE
-
-        return PATH_NAME_FILE
+    def item_type(self) -> LocalPathType:
+        return LocalPathType.FILE
 
     def _not_found_exc(self) -> FileNotFoundException:
         from wexample_file.excpetion.file_not_found_exception import (
