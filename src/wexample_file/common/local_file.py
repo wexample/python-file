@@ -86,7 +86,7 @@ class LocalFile(AbstractLocalItemPath):
         return True
 
     def write(
-            self, content: str, encoding: str = "utf-8", make_parents: bool = True
+        self, content: str, encoding: str = "utf-8", make_parents: bool = True
     ) -> None:
         """Write text content to the file, creating it if necessary."""
         from wexample_file.excpetion.not_a_file_exception import NotAFileException

@@ -24,6 +24,9 @@ class LocalDirectory(AbstractLocalItemPath):
 
         self.path.mkdir(parents=parents, exist_ok=exist_ok)
 
+    def item_type(self) -> LocalPathType:
+        return LocalPathType.DIRECTORY
+
     def remove(self) -> None:
         """Delete the directory recursively if it exists; no-op if it doesn't.
 
@@ -53,9 +56,6 @@ class LocalDirectory(AbstractLocalItemPath):
         if self.path.exists() and not self.path.is_dir():
             raise NotADirectoryException(self.path)
         return self.path
-
-    def item_type(self) -> LocalPathType:
-        return LocalPathType.DIRECTORY
 
     def _not_found_exc(self) -> DirectoryNotFoundException:
         from wexample_file.excpetion.directory_not_found_exception import (

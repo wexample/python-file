@@ -49,6 +49,14 @@ class AbstractLocalItemPath(WithPathMixin):
         return NotImplemented
 
     @abstract_method
+    def item_type(self) -> str:
+        """Return the kind of local item (e.g., 'file' or 'directory').
+
+        Subclasses must implement this to mark the class as abstract and to
+        provide a simple discriminator for debugging and representation.
+        """
+
+    @abstract_method
     def remove(self) -> None:
         """Remove the underlying path from the filesystem.
 
@@ -57,12 +65,4 @@ class AbstractLocalItemPath(WithPathMixin):
           recursively.
         - This operation should be idempotent: if the path does not exist,
           the method should complete without raising.
-        """
-
-    @abstract_method
-    def item_type(self) -> str:
-        """Return the kind of local item (e.g., 'file' or 'directory').
-
-        Subclasses must implement this to mark the class as abstract and to
-        provide a simple discriminator for debugging and representation.
         """
