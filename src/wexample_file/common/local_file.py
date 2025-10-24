@@ -52,6 +52,9 @@ class LocalFile(AbstractLocalItemPath):
 
         return Path(self.path).stat().st_size == 0
 
+    def item_type(self) -> LocalPathType:
+        return LocalPathType.FILE
+
     def read(self, encoding: str = "utf-8") -> str | None:
         """Read and return the file content as text, or None if it doesn't exist.
 
@@ -105,9 +108,6 @@ class LocalFile(AbstractLocalItemPath):
         # Only validate type when it exists; creation workflows may pass a non-existent path
         if self.path.exists() and not self.path.is_file():
             raise NotAFileException(self.path)
-
-    def item_type(self) -> LocalPathType:
-        return LocalPathType.FILE
 
     def _not_found_exc(self) -> FileNotFoundException:
         from wexample_file.excpetion.file_not_found_exception import (

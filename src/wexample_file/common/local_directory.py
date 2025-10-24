@@ -3,12 +3,12 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from .abstract_local_item_path import AbstractLocalItemPath
-from ..enum.local_path_type import LocalPathType
 
 if TYPE_CHECKING:
     from wexample_file.excpetion.directory_not_found_exception import (
         DirectoryNotFoundException,
     )
+    from enum.local_path_type import LocalPathType
 
 
 class LocalDirectory(AbstractLocalItemPath):
@@ -25,6 +25,7 @@ class LocalDirectory(AbstractLocalItemPath):
         self.path.mkdir(parents=parents, exist_ok=exist_ok)
 
     def item_type(self) -> LocalPathType:
+        from enum.local_path_type import LocalPathType
         return LocalPathType.DIRECTORY
 
     def remove(self) -> None:
