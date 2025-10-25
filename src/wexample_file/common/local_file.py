@@ -5,10 +5,9 @@ from typing import TYPE_CHECKING
 from .abstract_local_item_path import AbstractLocalItemPath
 
 if TYPE_CHECKING:
-    pass
+    from enum.local_path_type import LocalPathType
 
     from wexample_file.excpetion.file_not_found_exception import FileNotFoundException
-    from enum.local_path_type import LocalPathType
 
 
 class LocalFile(AbstractLocalItemPath):
