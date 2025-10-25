@@ -1,9 +1,11 @@
 from __future__ import annotations
 
-from wexample_file.mixin.with_path_mixin import WithPathMixin
+from typing import TYPE_CHECKING
+
 from wexample_helpers.classes.abstract_method import abstract_method
 from wexample_helpers.const.types import PathOrString
-from typing import TYPE_CHECKING
+
+from wexample_file.mixin.with_path_mixin import WithPathMixin
 
 if TYPE_CHECKING:
     from pathlib import Path

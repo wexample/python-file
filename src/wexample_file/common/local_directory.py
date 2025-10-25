@@ -5,10 +5,11 @@ from typing import TYPE_CHECKING
 from .abstract_local_item_path import AbstractLocalItemPath
 
 if TYPE_CHECKING:
+    from enum.local_path_type import LocalPathType
+
     from wexample_file.excpetion.directory_not_found_exception import (
         DirectoryNotFoundException,
     )
-    from enum.local_path_type import LocalPathType
 
 
 class LocalDirectory(AbstractLocalItemPath):

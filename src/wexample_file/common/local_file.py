@@ -54,6 +54,7 @@ class LocalFile(AbstractLocalItemPath):
 
     def item_type(self) -> LocalPathType:
         from enum.local_path_type import LocalPathType
+
         return LocalPathType.FILE
 
     def read(self, encoding: str = "utf-8") -> str | None:
