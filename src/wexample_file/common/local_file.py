@@ -3,12 +3,12 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from .abstract_local_item_path import AbstractLocalItemPath
-from ..enum.local_path_type import LocalPathType
 
 if TYPE_CHECKING:
     pass
 
     from wexample_file.excpetion.file_not_found_exception import FileNotFoundException
+    from enum.local_path_type import LocalPathType
 
 
 class LocalFile(AbstractLocalItemPath):
@@ -53,6 +53,7 @@ class LocalFile(AbstractLocalItemPath):
         return Path(self.path).stat().st_size == 0
 
     def item_type(self) -> LocalPathType:
+        from enum.local_path_type import LocalPathType
         return LocalPathType.FILE
 
     def read(self, encoding: str = "utf-8") -> str | None:

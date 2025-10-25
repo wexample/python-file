@@ -4,6 +4,7 @@ from wexample_file.mixin.with_path_mixin import WithPathMixin
 from wexample_helpers.classes.abstract_method import abstract_method
 from wexample_helpers.const.types import PathOrString
 from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
     from pathlib import Path
 
@@ -26,6 +27,7 @@ class AbstractLocalItemPath(WithPathMixin):
         - Expands '~' and resolves to an absolute path with strict=False
         """
         from pathlib import Path
+
         if isinstance(path, str):
             self.path = Path(path)
         if isinstance(path, Path):
@@ -44,6 +46,7 @@ class AbstractLocalItemPath(WithPathMixin):
 
     def __eq__(self, other) -> bool:
         from pathlib import Path
+
         if isinstance(other, AbstractLocalItemPath):
             return self.path == other.path
         if isinstance(other, (str, Path)):

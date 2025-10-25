@@ -26,6 +26,7 @@ class LocalDirectory(AbstractLocalItemPath):
 
     def item_type(self) -> LocalPathType:
         from enum.local_path_type import LocalPathType
+
         return LocalPathType.DIRECTORY
 
     def remove(self) -> None:
