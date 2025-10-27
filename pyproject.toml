@@ -34,11 +34,11 @@ homepage = "https://github.com/wexample/python-file"
 [project.optional-dependencies]
 dev = [
     "pytest",
+    "pytest-cov",
 ]
 [tool.setuptools.packages.find]
-include = [
-    "*",
-]
+include = ["*"]
+exclude = ["wexample_file.testing*"]
 
 [tool.pdm]
 distribution = true
