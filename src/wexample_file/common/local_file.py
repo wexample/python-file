@@ -7,7 +7,7 @@ from .abstract_local_item_path import AbstractLocalItemPath
 if TYPE_CHECKING:
     from enum.local_path_type import LocalPathType
 
-    from wexample_file.excpetion.file_not_found_exception import FileNotFoundException
+    from wexample_file.exception.file_not_found_exception import FileNotFoundException
 
 
 class LocalFile(AbstractLocalItemPath):
@@ -93,7 +93,7 @@ class LocalFile(AbstractLocalItemPath):
         self, content: str, encoding: str = "utf-8", make_parents: bool = True
     ) -> None:
         """Write text content to the file, creating it if necessary."""
-        from wexample_file.excpetion.not_a_file_exception import NotAFileException
+        from wexample_file.exception.not_a_file_exception import NotAFileException
 
         if make_parents:
             self.path.parent.mkdir(parents=True, exist_ok=True)
@@ -102,7 +102,7 @@ class LocalFile(AbstractLocalItemPath):
         self.path.write_text(content, encoding=encoding)
 
     def _check_exists(self) -> None:
-        from wexample_file.excpetion.not_a_file_exception import NotAFileException
+        from wexample_file.exception.not_a_file_exception import NotAFileException
 
         super()._check_exists()
 
@@ -111,7 +111,7 @@ class LocalFile(AbstractLocalItemPath):
             raise NotAFileException(self.path)
 
     def _not_found_exc(self) -> FileNotFoundException:
-        from wexample_file.excpetion.file_not_found_exception import (
+        from wexample_file.exception.file_not_found_exception import (
             FileNotFoundException,
         )
 

@@ -7,7 +7,7 @@ from .abstract_local_item_path import AbstractLocalItemPath
 if TYPE_CHECKING:
     from enum.local_path_type import LocalPathType
 
-    from wexample_file.excpetion.directory_not_found_exception import (
+    from wexample_file.exception.directory_not_found_exception import (
         DirectoryNotFoundException,
     )
 
@@ -50,7 +50,7 @@ class LocalDirectory(AbstractLocalItemPath):
                 pass
 
     def _check_exists(self):
-        from wexample_file.excpetion.not_a_directory_exception import (
+        from wexample_file.exception.not_a_directory_exception import (
             NotADirectoryException,
         )
 
@@ -61,7 +61,7 @@ class LocalDirectory(AbstractLocalItemPath):
         return self.path
 
     def _not_found_exc(self) -> DirectoryNotFoundException:
-        from wexample_file.excpetion.directory_not_found_exception import (
+        from wexample_file.exception.directory_not_found_exception import (
             DirectoryNotFoundException,
         )
 

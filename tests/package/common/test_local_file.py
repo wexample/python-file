@@ -14,7 +14,7 @@ def test_local_file_check_exists_true_accepts_existing_file(tmp_path) -> None:
 
 def test_local_file_check_exists_true_rejects_missing(tmp_path) -> None:
     from wexample_file.common.local_file import LocalFile
-    from wexample_file.excpetion.file_not_found_exception import FileNotFoundException
+    from wexample_file.exception.file_not_found_exception import FileNotFoundException
 
     p = tmp_path / "missing2.txt"
     assert not p.exists()
@@ -112,7 +112,7 @@ def test_local_file_read_returns_none_when_missing(tmp_path) -> None:
 
 def test_local_file_rejects_directory(tmp_path) -> None:
     from wexample_file.common.local_file import LocalFile
-    from wexample_file.excpetion.not_a_file_exception import NotAFileException
+    from wexample_file.exception.not_a_file_exception import NotAFileException
 
     d = tmp_path / "adir"
     d.mkdir()

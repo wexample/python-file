@@ -14,7 +14,7 @@ def test_local_directory_check_exists_true_accepts_existing_dir(tmp_path) -> Non
 
 def test_local_directory_check_exists_true_rejects_missing(tmp_path) -> None:
     from wexample_file.common.local_directory import LocalDirectory
-    from wexample_file.excpetion.directory_not_found_exception import (
+    from wexample_file.exception.directory_not_found_exception import (
         DirectoryNotFoundException,
     )
 
@@ -57,7 +57,7 @@ def test_local_directory_instantiation_with_str(tmp_path) -> None:
 
 def test_local_directory_rejects_file(tmp_path) -> None:
     from wexample_file.common.local_directory import LocalDirectory
-    from wexample_file.excpetion.not_a_directory_exception import NotADirectoryException
+    from wexample_file.exception.not_a_directory_exception import NotADirectoryException
 
     f = tmp_path / "afile.txt"
     f.write_text("hello")
