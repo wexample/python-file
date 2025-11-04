@@ -1,6 +1,6 @@
 # wexample-file
 
-Version: 0.0.12
+Version: 0.0.45
 
 Package that allows you to manage the state of files and directories using YAML configuration files.
 
