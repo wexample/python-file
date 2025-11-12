@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+
 def line_count_recursive(path: Path, pattern: str = "*") -> int:
     """
     Recursively counts the total number of lines in all files matching a given pattern
