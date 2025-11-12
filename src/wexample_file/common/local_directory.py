@@ -1,14 +1,15 @@
 from __future__ import annotations
 
-from pathlib import Path
-
-from pydantic import field_validator
-from wexample_file.excpetion.directory_not_found_exception import (
-    DirectoryNotFoundException,
-)
-from wexample_file.excpetion.not_a_directory_exception import NotADirectoryException
+from typing import TYPE_CHECKING
 
 from .abstract_local_item_path import AbstractLocalItemPath
+
+if TYPE_CHECKING:
+    from enum.local_path_type import LocalPathType
+
+    from wexample_file.exception.directory_not_found_exception import (
+        DirectoryNotFoundException,
+    )
 
 
 class LocalDirectory(AbstractLocalItemPath):
@@ -18,20 +19,16 @@ class LocalDirectory(AbstractLocalItemPath):
     be a directory.
     """
 
-    @field_validator("path")
-    @classmethod
-    def _validate_is_dir(cls, v: Path) -> Path:
-        if v.exists() and not v.is_dir():
-            raise NotADirectoryException(v)
-        return v
+    def create(self, parents: bool = True, exist_ok: bool = True) -> None:
+        if self.path.exists() and self.path.is_file():
+            return None
 
-    def _kind(self) -> str:
-        from wexample_file.const.globals import PATH_NAME_DIRECTORY
+        self.path.mkdir(parents=parents, exist_ok=exist_ok)
 
-        return PATH_NAME_DIRECTORY
+    def item_type(self) -> LocalPathType:
+        from enum.local_path_type import LocalPathType
 
-    def _not_found_exc(self):
-        return DirectoryNotFoundException(self.path)
+        return LocalPathType.DIRECTORY
 
     def remove(self) -> None:
         """Delete the directory recursively if it exists; no-op if it doesn't.
@@ -52,8 +49,20 @@ class LocalDirectory(AbstractLocalItemPath):
             except FileNotFoundError:
                 pass
 
-    def create(self, parents: bool = True, exist_ok: bool = True) -> None:
-        if self.path.exists() and self.path.is_file():
-            return None
+    def _check_exists(self):
+        from wexample_file.exception.not_a_directory_exception import (
+            NotADirectoryException,
+        )
 
-        self.path.mkdir(parents=parents, exist_ok=exist_ok)
+        super()._check_exists()
+
+        if self.path.exists() and not self.path.is_dir():
+            raise NotADirectoryException(self.path)
+        return self.path
+
+    def _not_found_exc(self) -> DirectoryNotFoundException:
+        from wexample_file.exception.directory_not_found_exception import (
+            DirectoryNotFoundException,
+        )
+
+        return DirectoryNotFoundException(self.path)
