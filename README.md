@@ -1,6 +1,6 @@
 # wexample-file
 
-Version: 0.0.51
+Version: 0.0.52
 
 Package that allows you to manage the state of files and directories using YAML configuration files.
 
@@ -208,7 +208,7 @@ Refer to each package's documentation for specific version compatibility require
 
 - attrs: >=23.1.0
 - cattrs: >=23.1.0
-- wexample-helpers: ==0.0.87
+- wexample-helpers: ==0.0.88
 
 
 # About us
